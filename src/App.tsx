@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
+// const TOTAL_PAGE_COUNT = 10000;
+const TOTAL_PAGE_COUNT = 10;
 
 interface Coin {
     id: string;
@@ -20,20 +22,67 @@ const getCoins = async (coinsParams: string) => {
     return res.json();
 };
 
+const getNumbers = (from: number, to: number) => {
+    const numbers = [];
+
+    for (let n = from; n <= to; n += 1) {
+        numbers.push(n);
+    }
+
+    return numbers;
+};
+
 export const App = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [coins, setCoins] = useState<Coin[]>([]);
     const [currentPriceValue, setCurrentPriceValue] = useState('usd');
     const [orderValue, setOrderValue] = useState('market_cap_desc');
-    const [perPageValue, setPerPageValue] = useState('10');
+    const [perPageValue, setPerPageValue] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const [startValue, setStartValue] = useState(1);
+    const [endValue, setEndValue] = useState(5);
 
     useEffect(() => {
+        const coinsParams = `vs_currency=${currentPriceValue}&order=${orderValue}&per_page=${perPageValue.toString()}&page=${currentPage.toString()}`;
+
         setIsLoading(true);
 
-        getCoins(`vs_currency=${currentPriceValue}&order=${orderValue}&per_page=${perPageValue}&page=1`)
+        getCoins(coinsParams)
             .then(setCoins)
             .finally(() => setIsLoading(false));
-    }, [currentPriceValue, orderValue, perPageValue]);
+    }, [currentPage, currentPriceValue, orderValue, perPageValue]);
+
+    const getPreviousPage = () => {
+        setCurrentPage((prevState) => (prevState !== 1 ? prevState - 1 : prevState));
+    };
+
+    const getNextPage = () => {
+        setCurrentPage((prevState) => {
+            return prevState !== Math.ceil(TOTAL_PAGE_COUNT / perPageValue) ? prevState + 1 : prevState;
+        });
+    };
+
+    const pageNumbers = useMemo(() => {
+        const firstThree = [1, 2, 3];
+        const lastThree = [TOTAL_PAGE_COUNT - 2, TOTAL_PAGE_COUNT - 1, TOTAL_PAGE_COUNT];
+
+        switch (true) {
+            case firstThree.includes(currentPage):
+                setStartValue(1);
+                setEndValue(5);
+                break;
+            case lastThree.includes(currentPage):
+                setStartValue(TOTAL_PAGE_COUNT - 4);
+                setEndValue(TOTAL_PAGE_COUNT);
+                break;
+            default:
+                setStartValue(currentPage - 2);
+                setEndValue(currentPage + 2);
+        }
+
+        return getNumbers(startValue, endValue);
+    }, [currentPage, endValue, startValue]);
 
     return (
         <section>
@@ -75,7 +124,27 @@ export const App = () => {
                     </table>
 
                     <div>
-                        <select value={perPageValue} onChange={({ target }) => setPerPageValue(target.value)}>
+                        <ul>
+                            <li className={currentPage === 1 ? 'disabled' : ''} onClick={getPreviousPage}>
+                                {'<'}
+                            </li>
+
+                            {pageNumbers.map((pageNumber) => (
+                                <li
+                                    className={pageNumber === currentPage ? 'active' : ''}
+                                    onClick={() => setCurrentPage(pageNumber)}
+                                    key={pageNumber}
+                                >
+                                    {pageNumber}
+                                </li>
+                            ))}
+
+                            <li className={currentPage === TOTAL_PAGE_COUNT ? 'disabled' : ''} onClick={getNextPage}>
+                                {'>'}
+                            </li>
+                        </ul>
+
+                        <select value={perPageValue} onChange={({ target }) => setPerPageValue(+target.value)}>
                             <option value='5'>5 / page</option>
                             <option value='10'>10 / page</option>
                             <option value='20'>20 / page</option>

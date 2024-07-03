@@ -1,0 +1,13 @@
+li {
+    cursor: pointer;
+}
+
+.active {
+    color: blue;
+}
+
+.disabled {
+    opacity: 70;
+    pointer-events: none;
+    color: #ccc;
+}
