@@ -1,12 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
-import { langs } from '@uiw/codemirror-extensions-langs';
-
+export const code = `import { useEffect, useMemo, useState } from 'react';
 import { LuChevronDown } from 'react-icons/lu';
 import { LuChevronLeft } from 'react-icons/lu';
 import { LuChevronRight } from 'react-icons/lu';
 import cn from 'classnames';
-import { code } from './code';
 
 const API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
 const TOTAL_PAGE_COUNT = 10000;
@@ -20,7 +16,7 @@ interface Coin {
 }
 
 const getCoins = async (coinsParams: string) => {
-    const res = await fetch(`${API_URL}?${coinsParams}&sparkline=false`);
+    const res = await fetch(\`\${API_URL}?\${coinsParams}&sparkline=false\`);
 
     if (!res.ok) {
         throw new Error('Failed to fetch data');
@@ -51,7 +47,7 @@ export const App = () => {
     const [endValue, setEndValue] = useState(5);
 
     useEffect(() => {
-        const coinsParams = `vs_currency=${currentPriceValue}&order=${orderValue}&per_page=${perPageValue.toString()}&page=${currentPage.toString()}`;
+        const coinsParams = \`vs_currency=\${currentPriceValue}&order=\${orderValue}&per_page=\${perPageValue.toString()}&page=\${currentPage.toString()}\`;
 
         setIsLoading(true);
 
@@ -249,19 +245,6 @@ export const App = () => {
                     </div>
                 </div>
             </div>
-
-            <CodeMirror
-                theme='light'
-                value={`// App.tsx\n${code}`}
-                style={{ marginTop: '20px' }}
-                extensions={[langs.tsx()]}
-                contentEditable
-                spellCheck={false}
-                autoCapitalize='off'
-                autoCorrect='off'
-                translate='no'
-                maxHeight='1000px'
-            />
         </section>
     );
-};
+};`;
