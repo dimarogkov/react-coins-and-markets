@@ -5,8 +5,8 @@ import { langs } from '@uiw/codemirror-extensions-langs';
 import { LuChevronDown } from 'react-icons/lu';
 import { LuChevronLeft } from 'react-icons/lu';
 import { LuChevronRight } from 'react-icons/lu';
-import cn from 'classnames';
 import { code } from './code';
+import cn from 'classnames';
 
 const API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
 const TOTAL_PAGE_COUNT = 10000;
