@@ -2,9 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { langs } from '@uiw/codemirror-extensions-langs';
 
-import { LuChevronDown } from 'react-icons/lu';
-import { LuChevronLeft } from 'react-icons/lu';
-import { LuChevronRight } from 'react-icons/lu';
+import { LuChevronDown, LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { code } from './code';
 import cn from 'classnames';
 
