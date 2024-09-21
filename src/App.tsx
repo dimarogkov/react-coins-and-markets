@@ -101,7 +101,7 @@ export const App = () => {
                         <select
                             value={currentPriceValue}
                             onChange={({ target }) => setCurrentPriceValue(target.value)}
-                            className='w-full h-full px-3 pr-11 rounded-md border cursor-pointer outline-none appearance-none border-gray focus:border-black transition-all duration-300'
+                            className='w-full h-full px-3 pr-11 rounded-md border cursor-pointer outline-none appearance-none border-gray bg-transparent focus:border-black transition-all duration-300'
                         >
                             <option value='usd'>USD</option>
                             <option value='eur'>EUR</option>
@@ -114,7 +114,7 @@ export const App = () => {
                         <select
                             value={orderValue}
                             onChange={({ target }) => setOrderValue(target.value)}
-                            className='w-full h-full px-3 pr-11 rounded-md border cursor-pointer outline-none appearance-none border-gray focus:border-black transition-all duration-300'
+                            className='w-full h-full px-3 pr-11 rounded-md border cursor-pointer outline-none appearance-none border-gray bg-transparent focus:border-black transition-all duration-300'
                         >
                             <option value='market_cap_desc'>Market cap descending</option>
                             <option value='market_cap_asc'>Market cap ascending</option>
@@ -204,11 +204,11 @@ export const App = () => {
                                 key={pageNumber}
                                 onClick={() => setCurrentPage(pageNumber)}
                                 className={cn(
-                                    'flex items-center justify-center w-8 h-8 rounded-md border transition-colors duration-300 hover:border-blue hover:text-blue',
+                                    'flex items-center justify-center w-8 h-8 rounded-md border transition-colors duration-300 hover:border-blue hover:bg-blue hover:text-white',
                                     {
                                         'border-blue bg-blue text-white pointer-events-none':
                                             pageNumber === currentPage,
-                                        'border-gray cursor-pointer': pageNumber !== currentPage,
+                                        'border-gray text-black cursor-pointer': pageNumber !== currentPage,
                                     }
                                 )}
                             >
@@ -234,7 +234,7 @@ export const App = () => {
                         <select
                             value={perPageValue}
                             onChange={({ target }) => setPerPageValue(+target.value)}
-                            className='w-full h-full px-3 pr-11 rounded-md border cursor-pointer outline-none appearance-none border-gray focus:border-black transition-all duration-300'
+                            className='w-full h-full px-3 pr-11 rounded-md border cursor-pointer outline-none appearance-none border-gray bg-transparent focus:border-black transition-all duration-300'
                         >
                             <option value='5'>5 / page</option>
                             <option value='10'>10 / page</option>
